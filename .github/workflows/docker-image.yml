@@ -52,7 +52,7 @@ jobs:
         skopeo copy \
           --multi-arch all \
           docker://${{ secrets.DOCKER_USERNAME }}/agent:${{ steps.time.outputs.tag }} \
-          oci-archive:artifacts/agent-${{ steps.time.outputs.tag }}.tar:${{ secrets.DOCKER_USERNAME }}/agent:${{ steps.time.outputs.tag }}
+          oci-archive:artifacts/agent-${{ steps.time.outputs.tag }}.tar
     
     - name: Upload tar artifact
       uses: actions/upload-artifact@v4

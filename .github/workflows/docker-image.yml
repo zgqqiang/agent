@@ -38,5 +38,5 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: zzuo1991/agent:${{ steps.time.outputs.tag }}
+        tags: ${{ secrets.DOCKER_USERNAME }}/agent:${{ steps.time.outputs.tag }}
         platforms: linux/amd64,linux/arm64

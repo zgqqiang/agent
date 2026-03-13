@@ -32,7 +32,8 @@ jobs:
     
     - name: Generate timestamp
       id: time
-      run: echo "tag=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_OUTPUT
+      run: echo "tag=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+      # run: echo "tag=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_OUTPUT
     
     - name: Build and push multi-arch
       uses: docker/build-push-action@v5
@@ -41,22 +42,22 @@ jobs:
         tags: ${{ secrets.DOCKER_USERNAME }}/agent:${{ steps.time.outputs.tag }}
         platforms: linux/amd64,linux/arm64
 
-    - name: Install skopeo
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y skopeo
+    # - name: Install skopeo
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y skopeo
     
-    - name: Save multi-arch image to tar
-      run: |
-        mkdir -p artifacts
-        skopeo copy \
-          --multi-arch all \
-          docker://${{ secrets.DOCKER_USERNAME }}/agent:${{ steps.time.outputs.tag }} \
-          oci-archive:artifacts/agent-${{ steps.time.outputs.tag }}.tar
+    # - name: Save multi-arch image to tar
+    #   run: |
+    #     mkdir -p artifacts
+    #     skopeo copy \
+    #       --multi-arch all \
+    #       docker://${{ secrets.DOCKER_USERNAME }}/agent:${{ steps.time.outputs.tag }} \
+    #       oci-archive:artifacts/agent-${{ steps.time.outputs.tag }}.tar
     
-    - name: Upload tar artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: agent-${{ steps.time.outputs.tag }}
-        path: artifacts/agent-${{ steps.time.outputs.tag }}.tar
-        retention-days: 30
+    # - name: Upload tar artifact
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: agent-${{ steps.time.outputs.tag }}
+    #     path: artifacts/agent-${{ steps.time.outputs.tag }}.tar
+    #     retention-days: 30

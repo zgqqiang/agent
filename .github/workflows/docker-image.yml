@@ -1,14 +1,22 @@
 name: Docker Build
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      branch_or_tag:
+        description: '选择要构建的分支或tag'
+        required: true
+        default: 'main'
+        type: string
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.inputs.branch_or_tag }}
     
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
